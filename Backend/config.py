@@ -6,5 +6,3 @@ class config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.getenv('SECRET_KEY')
     DEBUG = True
-
-print(os.getenv('SECRET_KEY'))

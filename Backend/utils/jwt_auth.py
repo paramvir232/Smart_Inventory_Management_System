@@ -4,8 +4,8 @@ import os
 from functools import wraps
 from flask import request, jsonify
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
 
+SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
 def generate_token(username):
     # Create a token with a payload that includes the username and an expiration time
     payload = {
