@@ -8,12 +8,22 @@ from flask_cors import CORS
 import jwt
 import datetime
 from functools import wraps
+from Routes import blueprints as bp
+from config import config
 
 app = Flask(__name__)
+app.config.from_object(config)
 api = Api(app)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://api_1yct_user:YTnRCqigFRXkkjsZLLyQ2UqQfgjJQjG8@dpg-cumuhiggph6c738a6vpg-a.oregon-postgres.render.com/api_1yct'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key'
+
 db = SQLAlchemy(app)
+
+app.register_blueprint(bp[0], url_prefix='/auth')
+
+@app.route('/')
+def start():
+    return "<h1>START</h1>"
+
+if __name__ == '__main__':
+    app.run(debug=True)
