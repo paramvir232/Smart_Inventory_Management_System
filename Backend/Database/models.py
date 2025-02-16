@@ -1,7 +1,7 @@
 # models.py
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from main import db
+# from main import db
 
 db = SQLAlchemy()
 
@@ -11,6 +11,16 @@ class Store_Login(db.Model):
     storeName= db.Column(db.String(100), nullable=False)
     storeLocation = db.Column(db.String(100), nullable=False)
     storeContact = db.Column(db.Integer, nullable=False)
+
+    def serialize(self):
+        """Serialize Product object to dictionary"""
+        return {
+            'Store_id': self.storeId,
+            'Store_name': self.storeName,
+            'Store_Location': self.storeLocation,
+            'Store_Contact': self.storeContact
+
+        }
 
 
 # class Product(db.Model):

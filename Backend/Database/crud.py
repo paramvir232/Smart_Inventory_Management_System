@@ -1,9 +1,10 @@
-from models import db
+from .models import db
 from sqlalchemy.exc import SQLAlchemyError
 
 class CRUD:
     @staticmethod
     def add_item(model, **kwargs):
+        """add_item( table_name, {'id':3})"""
         try:
             item = model(**kwargs)
             db.session.add(item)
@@ -15,6 +16,7 @@ class CRUD:
 
     @staticmethod
     def get_item(model, item_id):
+        """get_item( table_name , id)"""
         try:
             item = model.query.get(item_id)
             if item is None:
@@ -25,6 +27,7 @@ class CRUD:
             
     @staticmethod
     def update_item(model, item_id, **kwargs):
+        """add_item( table_name, id, {'name':'prince'})"""
         try:
             item = model.query.get(item_id)
             if item is None:
@@ -41,6 +44,7 @@ class CRUD:
             
     @staticmethod
     def delete_item(model, item_id):
+        """ delete_item( table_name , id)"""
         try:
             item = model.query.get(item_id)
             if item is None:
@@ -55,6 +59,7 @@ class CRUD:
 
     @staticmethod
     def get_all_items(model):
+        """ get_all_item( table_name )"""
         try:
             items = model.query.all()
             return [item.serialize() if hasattr(item, 'serialize') else item.__dict__ for item in items]
@@ -63,7 +68,7 @@ class CRUD:
     
     @staticmethod
     def universal_query(base_model, attributes=None, filters=None, joins=None):
-        """attribute=[name,age]\n filters=[age>10]\n joins=[table]"""
+        """attribute=[name,age] || filters=[age>10] ||joins=[table]"""
         try:
             # Start building the query from the base model
             query = db.session.query(*[getattr(base_model, attr) for attr in attributes]) if attributes else db.session.query(base_model)

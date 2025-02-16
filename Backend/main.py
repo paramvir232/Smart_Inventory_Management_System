@@ -27,11 +27,11 @@ app.register_blueprint(bp[0], url_prefix='/auth')
 def start():
     return "<h1>START</h1>"
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
 
 # DATABASE_URL = app.config["SQLALCHEMY_DATABASE_URI"]
 
