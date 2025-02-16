@@ -10,14 +10,16 @@ import datetime
 from functools import wraps
 from Routes import blueprints as bp
 from config import config
+from Database import db
 
 app = Flask(__name__)
 app.config.from_object(config)
-api = Api(app)
+# api = Api(app)
 CORS(app)
+db.init_app(app)
 
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 app.register_blueprint(bp[0], url_prefix='/auth')
 
@@ -25,5 +27,12 @@ app.register_blueprint(bp[0], url_prefix='/auth')
 def start():
     return "<h1>START</h1>"
 
-if __name__ == '__main__':
-    app.run(debug=True)
+with app.app_context():
+    db.create_all()
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
+
+# DATABASE_URL = app.config["SQLALCHEMY_DATABASE_URI"]
+
+# print(f"Database URL: {DATABASE_URL}")
