@@ -60,3 +60,38 @@ class CRUD:
             return [item.serialize() if hasattr(item, 'serialize') else item.__dict__ for item in items]
         except SQLAlchemyError as e:
             return {"message": f"Error: {str(e)}"}, 500
+    
+    @staticmethod
+    def universal_query(base_model, attributes=None, filters=None, joins=None):
+        """attribute=[name,age]\n filters=[age>10]\n joins=[table]"""
+        try:
+            # Start building the query from the base model
+            query = db.session.query(*[getattr(base_model, attr) for attr in attributes]) if attributes else db.session.query(base_model)
+            
+            # Apply joins if provided
+            if joins:
+                for join_model in joins:
+                    query = query.join(join_model)
+            
+            # Apply filters if provided
+            if filters:
+                query = query.filter(*filters)
+            
+            # Execute the query
+            results = query.all()
+            
+            # Serialize results
+            if attributes:
+                serialized = [dict(zip(attributes, result)) for result in results]
+            else:
+                serialized = [item.serialize() for item in results]
+
+            return serialized
+        except SQLAlchemyError as e:
+            return {"message": f"Database error: {str(e)}"}, 500
+        except AttributeError as e:
+            return {"message": f"Invalid attribute: {str(e)}"}, 400
+
+
+            
+        
