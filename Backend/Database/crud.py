@@ -27,7 +27,7 @@ class CRUD:
             
     @staticmethod
     def update_item(model, item_id, **kwargs):
-        """add_item( table_name, id, {'name':'prince'})"""
+        """update_item( table_name, id, **{'name':'prince'})"""
         try:
             item = model.query.get(item_id)
             if item is None:
