@@ -32,12 +32,12 @@ def token_required(f):
         
         try:
             # Decode the token to retrieve the payload
-            payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+            payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             current_user = payload['user']
         except jwt.ExpiredSignatureError:
             return jsonify({'message': 'Token has expired!'}), 401
         except jwt.InvalidTokenError:
             return jsonify({'message': 'Invalid token!'}), 401
         
-        return f(current_user, *args, **kwargs)
+        return f(*args,**kwargs)
     return decorated

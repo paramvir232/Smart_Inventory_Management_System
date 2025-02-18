@@ -5,12 +5,20 @@ from sqlalchemy.exc import SQLAlchemyError
 from flask_migrate import Migrate
 from sqlalchemy import inspect
 from flask_cors import CORS
-import jwt
-import datetime
 from functools import wraps
 from Routes import blueprints as bp
 from config import config
 from Database import db
+import cloudinary
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+cloudinary.config(
+  cloud_name = os.getenv('Cloud_name'),
+  api_key = os.getenv('API_key'),
+  api_secret = os.getenv('API_secret')
+)
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -22,6 +30,9 @@ db.init_app(app)
 # db = SQLAlchemy(app)
 
 app.register_blueprint(bp[0], url_prefix='/auth')
+app.register_blueprint(bp[1], url_prefix='/product')
+
+
 
 @app.route('/')
 def start():

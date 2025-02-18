@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify
-from utils import generate_token
 from Database import CRUD,Store_Login
 from flask_restful import Resource
-from utils import generate_token
+from utils import generate_token,token_required
 
 auth_bp = Blueprint('auth',__name__)
 
@@ -26,12 +25,13 @@ def send():
     result = CRUD.add_item(Store_Login,**data)
     return jsonify(result)
 
-@auth_bp.route('/details')
+@auth_bp.route('/details', methods=['GET'])
+# @token_required
 def details():
     result = CRUD.get_all_items(Store_Login)
     return jsonify(result)
 
-@auth_bp.route('/change_password')
+@auth_bp.route('/change_password',methods = ['POST'])
 def changePassword():
     # data = {
     #     'storeId':1,

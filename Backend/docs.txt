@@ -1,1 +1,11 @@
-test
+******* LOGIN *******
+store_login(storeId:int, storePassword, storeName, storeLocation, storeContact:int)
+
+1. /auth/signup --POST {ALL}
+
+2. /auth/login --POST {ID,PASS}
+
+3. /auth/details --GET
+
+4. /auth/change_password  --POST {ID,NEW_PASS}
+

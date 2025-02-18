@@ -1,6 +1,14 @@
+import os
+from dotenv import load_dotenv
 from .models import db
+import dropbox
+from dropbox.files import WriteMode
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError
+load_dotenv()
+import cloudinary.uploader
 
+dbx = dropbox.Dropbox(os.getenv('DROPBOX_TOKEN'))
 class CRUD:
     @staticmethod
     def add_item(model, **kwargs):
@@ -96,6 +104,31 @@ class CRUD:
             return {"message": f"Database error: {str(e)}"}, 500
         except AttributeError as e:
             return {"message": f"Invalid attribute: {str(e)}"}, 400
+    
+    import cloudinary.uploader
+
+def upload_image_to_cloudinary(image_file):
+    """
+    Uploads an image file to Cloudinary and returns the secure URL.
+    
+    Parameters:
+        image_file (FileStorage): The image file object (from request.files).
+    
+    Returns:
+        dict: On success, returns a dict with the URL. Otherwise, returns an error message.
+    """
+    try:
+        # Upload the image file to Cloudinary. The file can be a file-like object.
+        upload_result = cloudinary.uploader.upload(image_file)
+        # Cloudinary returns many details; secure_url is the HTTPS URL.
+        return {"secure_url": upload_result.get("secure_url")}
+    except Exception as e:
+        return {"error": str(e)}
+
+        
+    
+
+ 
 
 
             

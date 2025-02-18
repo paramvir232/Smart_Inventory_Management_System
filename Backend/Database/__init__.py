@@ -1,2 +1,2 @@
-from .models import db,Store_Login
+from .models import db,Store_Login,Product
 from .crud import CRUD
