@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort,render_template
 from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
@@ -25,18 +25,23 @@ app.config.from_object(config)
 # api = Api(app)
 CORS(app)
 db.init_app(app)
+migrate = Migrate(app, db)
 
 
 # db = SQLAlchemy(app)
 
 app.register_blueprint(bp[0], url_prefix='/auth')
 app.register_blueprint(bp[1], url_prefix='/product')
+app.register_blueprint(bp[2], url_prefix='/supplier')
+app.register_blueprint(bp[3], url_prefix='/inventory')
+
+
 
 
 
 @app.route('/')
 def start():
-    return "<h1>START</h1>"
+    return render_template('form.html')
 
 # with app.app_context():
 #     db.create_all()

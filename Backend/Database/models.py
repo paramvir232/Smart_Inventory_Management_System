@@ -11,7 +11,7 @@ class Store_Login(db.Model):
     storePassword = db.Column(db.String(80),nullable=False)
     storeName= db.Column(db.String(100), nullable=False)
     storeLocation = db.Column(db.String(100), nullable=False)
-    storeContact = db.Column(db.Integer, nullable=False)
+    storeContact = db.Column(db.String(20), nullable=False)
 
 
     def serialize(self):
@@ -53,15 +53,45 @@ class Product(db.Model):
         }
 
 
-# class Supplier(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(100), nullable=False)
-#     contact = db.Column(db.String(120), nullable=True)
+class Supplier(db.Model):
+    __tablename__ = 'supplier'
 
-# class InventoryTransaction(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
-#     quantity = db.Column(db.Integer, nullable=False)
-#     transaction_type = db.Column(db.String(50), nullable=False)  # 'IN' or 'OUT'
-#     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-#     product = db.relationship('Product', backref=db.backref('transactions', lazy=True))
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Unique identifier for each supplier
+    supplierId = db.Column(db.Integer, nullable=False)
+    supplierProduct = db.Column(db.Integer, db.ForeignKey('product.productId'), nullable=False)
+    supplierName = db.Column(db.String(100), nullable=False)
+    supplierContact = db.Column(db.String(120), nullable=True)
+    supplierEmail = db.Column(db.String(120), nullable=True)
+
+    # Ensure supplierId is unique (if needed)
+    __table_args__ = (
+        db.UniqueConstraint('supplierId', 'supplierProduct'),
+    )
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "supplierId": self.supplierId,
+            "supplierProduct": self.supplierProduct,
+            "supplierName": self.supplierName,
+            "supplierContact": self.supplierContact,
+            "supplierEmail": self.supplierEmail
+        }
+
+
+
+class Inventory(db.Model):
+    __tablename__ = 'inventory'
+
+    storeId = db.Column(db.Integer, db.ForeignKey('store__login.storeId'), nullable=False)
+    supplierId = db.Column(db.Integer, db.ForeignKey('supplier.id'), nullable=False)  # Reference `supplier.id`
+
+    __table_args__ = (
+        db.PrimaryKeyConstraint('supplierId', 'storeId'),
+    )
+
+    def serialize(self):
+        return {
+            "storeId": self.storeId,
+            "supplierId": self.supplierId,
+        }

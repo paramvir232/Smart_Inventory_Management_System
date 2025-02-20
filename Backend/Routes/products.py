@@ -1,8 +1,7 @@
-from flask import Blueprint, request, jsonify, render_template, redirect, url_for
-from Database import CRUD,Product
+from flask import Blueprint, request, jsonify
+from Database import CRUD,Product,Store_Login
 from flask_restful import Resource
 from utils import generate_token,token_required
-from werkzeug.utils import secure_filename
 import cloudinary
 
 product_bp = Blueprint('product',__name__)
@@ -58,32 +57,28 @@ def add_product():
         return jsonify({"message": f"Error: {str(e)}"}), 500
 
 
-@product_bp.route('/')
-def form():
-    return render_template('form.html')
+# @product_bp.route('/')
+# def form():
+#     data = CRUD.universal_query(
+#     Product,
+#     filters=[Product.productId=1],
+#     joins=[(Store_Login, Product.productId == Store_Login.storeId)]  # Explicit join condition
+# )
 
-@product_bp.route('/upload', methods=['GET', 'POST'])
-def upload():
-    
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part in the request'}), 400
-    
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No file selected for uploading'}), 400
-    
-    # Optionally, secure the filename
-    filename = secure_filename(file.filename)
-    
-    # Upload to Cloudinary
-    result = cloudinary.uploader.upload(file)
-    secure_url = result.get("secure_url")
-    
-    if secure_url:
-        # Optionally, store secure_url in your database, etc.
-        return jsonify({'message': 'File uploaded successfully', 'url': secure_url})
-    else:
-        return jsonify({'error': 'Failed to upload file'}), 500
+#     return jsonify(data)
+
+@product_bp.route('/detail/<int:productId>')
+def product_detail(productId):
+    data = CRUD.get_item(Product,productId)
+    return jsonify(data)
+
+@product_bp.route('/lowstock')
+def lowStock():
+    data = CRUD.universal_query(
+    Product,
+    filters=[Product.productId>10])
+
+    return jsonify(data)
 
  
         
