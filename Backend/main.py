@@ -28,7 +28,7 @@ app.config.from_object(config)
 # api = Api(app)
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://inventory-management-system-jet.vercel.app"]}},supports_credentials=True)
 # CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)  
-CORS(bp[0], supports_credentials=True)
+# CORS(bp[0], supports_credentials=True)
 db.init_app(app)
 migrate = Migrate(app, db)
 
@@ -66,11 +66,14 @@ def login():
 #     db.create_all()
 @app.after_request
 def add_cors_headers(response):
-    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+    response.headers["Access-Control-Allow-Origin"] = "https://inventory-management-system-jet.vercel.app"
     response.headers["Access-Control-Allow-Credentials"] = "true"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     return response
+
+# origins="*"
+# print(app.config['CORS_ORIGIN'])
 
 if __name__ == '__main__':
     app.run(debug=True)
