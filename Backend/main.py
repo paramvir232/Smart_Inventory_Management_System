@@ -47,17 +47,18 @@ app.register_blueprint(bp[3], url_prefix='/inventory')
 def start():
     return render_template('form.html')
 
-@app.route('/login',methods = ['POST','OPTION'])
+@app.route('/login',methods = ['POST','OPTION','GET'])
 def login():
-    data = request.get_json()
-    token=""
-    retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
-    if data in retrived:
-        token = generate_token(data['storeId'])
-    if token:
-        return jsonify({'Token':token})
-    else:
-        return jsonify({'Error':'Wrong Credentials'})
+    # data = request.get_json()
+    # token=""
+    # retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
+    # if data in retrived:
+    #     token = generate_token(data['storeId'])
+    # if token:
+    #     return jsonify({'Token':token})
+    # else:
+    #     return jsonify({'Error':'Wrong Credentials'})
+    return jsonify({'message'})
 
 # with app.app_context():
 #     db.create_all()
