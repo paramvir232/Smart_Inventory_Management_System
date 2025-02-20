@@ -12,11 +12,12 @@ def login():
     #     'storePassword':"hi",
     # }
     data = request.get_json()
-    retrived = CRUD.universal_query(Store_Login,attributes=['storeId','storePassword'])
+    retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
     if data in retrived:
         token = generate_token(data.get('storeId'))
         return jsonify(token)
     return {'Error':'Wrong Credentials'},404
+    # return jsonify(retrived)
 
 
 @auth_bp.route('/signup',methods = ['POST'])
@@ -25,18 +26,15 @@ def send():
     result = CRUD.add_item(Store_Login,**data)
     return jsonify(result)
 
-@auth_bp.route('/details', methods=['GET'])
+@auth_bp.route('/details/<int:storeId>', methods=['GET'])
 # @token_required
-def details():
-    result = CRUD.get_all_items(Store_Login)
+def details(storeId):
+    result = CRUD.universal_query(Store_Login,filters=[storeId == Store_Login.storeId])
     return jsonify(result)
 
-@auth_bp.route('/change_password',methods = ['POST'])
-def changePassword():
-    # data = {
-    #     'storeId':1,
-    #     'storePassword':"Prince",
-    # }
-    data = request.json()
-    result = CRUD.update_item(Store_Login,data.get('storeId'),**{'storePassword':data.get('storePassword')})
+@auth_bp.route('/change_password/<int:storeId>',methods = ['POST'])
+def changePassword(storeId):
+    """ Send JSON with this format {'storePassword':'NEW_PASSWORD} """
+    data = request.get_json()
+    result = CRUD.update_item(Store_Login,storeId,**{'storePassword':data.get('storePassword')})
     return jsonify(result)
