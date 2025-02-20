@@ -53,7 +53,7 @@ def login():
     retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
     if data in retrived:
         token = generate_token(data.get('storeId'))
-        return jsonify(token)
+        return jsonify({'Token':token})
     return {'Error':'Wrong Credentials'},404
 
 # with app.app_context():
