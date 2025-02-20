@@ -17,7 +17,7 @@ def home(storeId):
         ],
         attributes={
             "Supplier": ["supplierName"],
-            "Product": ["productName","productStock"]
+            "Product": ["productName","productStock","productId"]
         }
     )
     

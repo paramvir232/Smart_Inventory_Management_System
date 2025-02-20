@@ -5,12 +5,8 @@ from utils import generate_token,token_required
 
 auth_bp = Blueprint('auth',__name__)
 
-@auth_bp.route('/login',methods = ['POST'])
+@auth_bp.route('/',methods = ['POST'])
 def login():
-    # data = {
-    #     'storeId':124,
-    #     'storePassword':"hi",
-    # }
     data = request.get_json()
     retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
     if data in retrived:
