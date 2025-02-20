@@ -75,6 +75,14 @@ def product_detail(productId):
     data = CRUD.get_item(Product,productId)
     return jsonify(data)
 
+@product_bp.route('/getall')
+def all():
+    data = CRUD.universal_query(Product,attributes={
+            "Product": ["productName", "productStock","image_url","productPrice","productSold","productStatus"],
+        })
+    return jsonify(data)
+    
+
 @product_bp.route('/lowstock/<int:storeId>')
 def low_stock_products(storeId):
     data = CRUD.universal_query(
