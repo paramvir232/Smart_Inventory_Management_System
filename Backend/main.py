@@ -26,7 +26,7 @@ cloudinary.config(
 app = Flask(__name__)
 app.config.from_object(config)
 # api = Api(app)
-CORS(app, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)  
 CORS(bp[0], supports_credentials=True)
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -47,17 +47,25 @@ app.register_blueprint(bp[3], url_prefix='/inventory')
 def start():
     return render_template('form.html')
 
-@app.route('/login',methods = ['POST'])
+@app.route('/login',methods = ['POST','OPTION'])
 def login():
-    data = request.get_json()
-    retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
-    if data in retrived:
-        token = generate_token(data.get('storeId'))
-        return jsonify({'Token':token})
-    return {'Error':'Wrong Credentials'},404
+    # data = request.get_json()
+    # retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
+    # if data in retrived:
+    #     token = generate_token(data.get('storeId'))
+    #     return jsonify({'Token':token})
+    # return {'Error':'Wrong Credentials'},404
+     return {"message": "Login successful"}
 
 # with app.app_context():
 #     db.create_all()
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
