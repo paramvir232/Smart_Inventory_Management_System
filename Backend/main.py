@@ -6,12 +6,15 @@ from flask_migrate import Migrate
 from sqlalchemy import inspect
 from flask_cors import CORS
 from functools import wraps
+from Database import CRUD,Product,Store_Login,Inventory,Supplier
 from Routes import blueprints as bp
 from config import config
 from Database import db
 import cloudinary
 import os
 from dotenv import load_dotenv
+from utils import generate_token,token_required
+
 load_dotenv()
 
 cloudinary.config(
@@ -43,6 +46,15 @@ app.register_blueprint(bp[3], url_prefix='/inventory')
 @app.route('/')
 def start():
     return render_template('form.html')
+
+@app.route('/login',methods = ['POST'])
+def login():
+    data = request.get_json()
+    retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
+    if data in retrived:
+        token = generate_token(data.get('storeId'))
+        return jsonify(token)
+    return {'Error':'Wrong Credentials'},404
 
 # with app.app_context():
 #     db.create_all()
