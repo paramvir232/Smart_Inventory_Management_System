@@ -30,7 +30,7 @@
 
         const formData = new FormData(e.target); // Gather form data, including file
 
-        const response = await fetch('/product/add_product', {
+        const response = await fetch('https://smart-inventory-management-system-5n6f.onrender.com/product/add_product', {
             method: 'POST',
             body: formData, // Send form data directly (including file)
         });
