@@ -6,7 +6,6 @@ from dropbox.files import WriteMode
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.exc import SQLAlchemyError
 load_dotenv()
-import cloudinary.uploader
 
 dbx = dropbox.Dropbox(os.getenv('DROPBOX_TOKEN'))
 class CRUD:

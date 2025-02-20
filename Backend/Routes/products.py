@@ -62,7 +62,7 @@ def add_product():
 #     data = CRUD.universal_query(
 #     Product,
 #     filters=[Product.productId=1],
-#     joins=[(Store_Login, Product.productId == Store_Login.storeId)]  # Explicit join condition
+#     joins=[(Store_Login, Product.productId == Store_Login.storeId)]
 # )
 
 #     return jsonify(data)
