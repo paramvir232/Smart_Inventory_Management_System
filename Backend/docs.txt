@@ -1,11 +1,29 @@
 ******* LOGIN *******
+
 store_login(storeId:int, storePassword, storeName, storeLocation, storeContact:int)
 
-1. /auth/signup --POST {ALL}
+1. /auth/signup --POST 
 
 2. /auth/login --POST {ID,PASS}
 
-3. /auth/details --GET
+3. /auth/details/<storeid> --GET
 
-4. /auth/change_password  --POST {ID,NEW_PASS}
+4. /auth/change_password/<storid>  --POST {'storePassword':'NewPassword'}
 
+******* INVENTORY ********
+
+1. /inventory/details/<storeid> --GET
+
+****** SUPPLIER *********
+
+1. /supplier/detail  --GET
+
+2. /supplier/info  --GET 
+
+******* PRODUCT ******
+
+1. (/product/add_product) inside the form
+
+2. /product/detail/<product_id>  --GET
+
+3. /product/lowstock/<storeid>   --GET
