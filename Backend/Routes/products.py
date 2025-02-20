@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from Database import CRUD,Product,Store_Login
+from Database import CRUD,Product,Store_Login,Inventory,Supplier
 from flask_restful import Resource
 from utils import generate_token,token_required
 import cloudinary
@@ -72,13 +72,23 @@ def product_detail(productId):
     data = CRUD.get_item(Product,productId)
     return jsonify(data)
 
-@product_bp.route('/lowstock')
-def lowStock():
+@product_bp.route('/lowstock/<int:storeId>')
+def low_stock_products(storeId):
     data = CRUD.universal_query(
-    Product,
-    filters=[Product.productId>10])
+        Inventory,
+        filters=[Inventory.storeId == storeId, Product.productStock < 10],  # Filter by store and stock < 10
+        joins=[
+            (Supplier, Supplier.supplierId == Inventory.supplierId),  
+            (Product, Supplier.supplierProduct == Product.productId)
+        ],
+        attributes={
+            "Product": ["productName", "productStock"],
+            "Supplier": ["supplierName"]
+        }
+    )
 
     return jsonify(data)
+
 
  
         

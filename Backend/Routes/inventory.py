@@ -6,16 +6,19 @@ import cloudinary
 
 inventory_bp = Blueprint('inventory',__name__)
 
-@inventory_bp.route('/')
-def home():
+@inventory_bp.route('/<int:storeId>')
+def home(storeId):
     data = CRUD.universal_query(
-    Inventory,
-    joins=[(Supplier, Supplier.id == Inventory.supplierId),
-        (Product,Supplier.supplierProduct == Product.productId)],
-    attributes={
-        "Inventory":["storeId"],
-        "Supplier": ["supplierName"],
-        "Product": ["productName"]
-    }
-)
+        Inventory,
+        filters=[Inventory.storeId == storeId],
+        joins=[
+            (Supplier, Supplier.supplierId == Inventory.supplierId),  
+            (Product, Supplier.supplierProduct == Product.productId)
+        ],
+        attributes={
+            "Supplier": ["supplierName"],
+            "Product": ["productName","productStock"]
+        }
+    )
+    
     return jsonify(data)
