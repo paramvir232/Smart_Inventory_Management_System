@@ -49,13 +49,15 @@ def start():
 
 @app.route('/login',methods = ['POST','OPTION'])
 def login():
-    # data = request.get_json()
-    # retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
-    # if data in retrived:
-    #     token = generate_token(data.get('storeId'))
-    # return jsonify({'Token':token})
-    # return {'Error':'Wrong Credentials'},200
-     return {"message": "Login successful"}
+    data = request.get_json()
+    token=""
+    retrived = CRUD.universal_query(Store_Login,attributes={"Store__Login":['storeId','storePassword']})
+    if data in retrived:
+        token = generate_token(data['storeId'])
+    if token:
+        return jsonify({'Token':token})
+    else:
+        return jsonify({'Error':'Wrong Credentials'})
 
 # with app.app_context():
 #     db.create_all()
