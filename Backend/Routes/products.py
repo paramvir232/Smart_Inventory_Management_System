@@ -82,7 +82,7 @@ def low_stock_products(storeId):
             (Product, Supplier.supplierProduct == Product.productId)
         ],
         attributes={
-            "Product": ["productName", "productStock"],
+            "Product": ["productName", "productStock","image_url"],
             "Supplier": ["supplierName"]
         }
     )
