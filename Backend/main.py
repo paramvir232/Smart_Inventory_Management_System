@@ -23,7 +23,8 @@ cloudinary.config(
 app = Flask(__name__)
 app.config.from_object(config)
 # api = Api(app)
-CORS(app)
+CORS(app, supports_credentials=True)
+CORS(bp[0], supports_credentials=True)
 db.init_app(app)
 migrate = Migrate(app, db)
 
