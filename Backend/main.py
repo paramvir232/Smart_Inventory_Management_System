@@ -58,7 +58,8 @@ def login():
     #     return jsonify({'Token':token})
     # else:
     #     return jsonify({'Error':'Wrong Credentials'})
-    return jsonify({'message'})
+    return jsonify({'message': 'Login successful'})
+
 
 # with app.app_context():
 #     db.create_all()
