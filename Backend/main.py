@@ -64,13 +64,24 @@ def login():
 
 # with app.app_context():
 #     db.create_all()
-@app.after_request
-def add_cors_headers(response):
-    response.headers["Access-Control-Allow-Origin"] = "https://inventory-management-system-jet.vercel.app"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    return response
+
+# @app.after_request
+# def add_cors_headers(response):
+#     allowed_origins = [
+#         "http://localhost:3000",
+#         "https://inventory-management-system-jet.vercel.app"
+#     ]
+    
+#     origin = request.headers.get("Origin")  # Get the origin of the request
+    
+#     if origin in allowed_origins:
+#         response.headers["Access-Control-Allow-Origin"] = origin  # Dynamically set allowed origin
+
+#     response.headers["Access-Control-Allow-Credentials"] = "true"
+#     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+#     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+
+#     return response
 
 # origins="*"
 # print(app.config['CORS_ORIGIN'])
