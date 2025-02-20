@@ -1,8 +1,11 @@
+import cloudinary.uploader
 from flask import Blueprint, request, jsonify
 from Database import CRUD,Product,Store_Login,Inventory,Supplier
 from flask_restful import Resource
 from utils import generate_token,token_required
 import cloudinary
+from cloudinary import uploader
+
 
 product_bp = Blueprint('product',__name__)
 secure_url =None
