@@ -26,7 +26,7 @@ def add_product():
 
         if not all([product_name, product_price, product_stock, product_status]):
             return jsonify({"message": "Missing required fields: productName, productPrice, productStock, productStatus"}), 400
-
+        
         # Handle Image Upload to Cloudinary
         image_url = None
         if 'image' in request.files:
@@ -76,7 +76,7 @@ def product_detail(productId):
     return jsonify(data)
 
 @product_bp.route('/getall')
-def all():
+def getall():
     data = CRUD.universal_query(Product,attributes={
             "Product": ["productName", "productStock","image_url","productPrice","productSold","productStatus"],
         })
